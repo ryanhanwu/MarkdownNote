@@ -1,15 +1,14 @@
 /* line 1, ../sass/main.sass */
 body {
   padding-top: 60px;
-  padding-bottom: 40px;
 }
 
-/* line 7, ../sass/main.sass */
+/* line 6, ../sass/main.sass */
 #noteTitle {
   width: 50%;
 }
 
-/* line 10, ../sass/main.sass */
+/* line 9, ../sass/main.sass */
 #epiceditor {
   height: 500px;
 }
