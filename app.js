@@ -3,16 +3,16 @@
  */
 
 var express = require('express'),
-    routes = require('./routes'),
-  
-    http = require('http'),
-    path = require('path');
-var passport = require('passport'),
-    EvernoteStrategy = require('passport-evernote').Strategy;
+  routes = require('./routes'),
+  config = require('./config.json'),
+  http = require('http'),
+  path = require('path'),
+  passport = require('passport'),
+  EvernoteStrategy = require('passport-evernote').Strategy;
 
-var EVERNOTE_CONSUMER_KEY = "flyworld-2852";
-var EVERNOTE_CONSUMER_SECRET = "41ef7f788cbfe866";
-var app = express();
+var EVERNOTE_CONSUMER_KEY = config.consumerKey,
+  EVERNOTE_CONSUMER_SECRET = config.consumerSecret,
+  app = express();
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -31,7 +31,9 @@ app.use(express.logger('dev'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.session({ secret: 'keyboard cat' }));
+app.use(express.session({
+  secret: 'keyboard cat'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
@@ -39,39 +41,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if('development' == app.get('env')) {
-    app.use(express.errorHandler());
+  app.use(express.errorHandler());
 }
 passport.use(new EvernoteStrategy({
-    requestTokenURL: 'https://sandbox.evernote.com/oauth',
-    accessTokenURL: 'https://sandbox.evernote.com/oauth',
-    userAuthorizationURL: 'https://sandbox.evernote.com/OAuth.action',
-    consumerKey: EVERNOTE_CONSUMER_KEY,
-    consumerSecret: EVERNOTE_CONSUMER_SECRET,
-    callbackURL: "/auth/evernote/callback"
-  },
-  function(token, tokenSecret, profile, done) {
+  requestTokenURL: 'https://sandbox.evernote.com/oauth',
+  accessTokenURL: 'https://sandbox.evernote.com/oauth',
+  userAuthorizationURL: 'https://sandbox.evernote.com/OAuth.action',
+  consumerKey: EVERNOTE_CONSUMER_KEY,
+  consumerSecret: EVERNOTE_CONSUMER_SECRET,
+  callbackURL: "/auth/evernote/callback"
+}, function(token, tokenSecret, profile, done) {
 
-    process.nextTick(function () {
-      profile.token = token;
-      return done(null, profile);
-    });
-     
-  }
-));
-
-app.get('/auth/evernote', passport.authenticate('evernote'));
-app.get('/auth/evernote/callback',
-  passport.authenticate('evernote', { failureRedirect: '/login' }),
-  function(req, res) {
-      res.redirect('/');
+  process.nextTick(function() {
+    profile.token = token;
+    return done(null, profile);
   });
 
-app.get('/logout', function(req, res){
+}));
+
+app.get('/auth/evernote', passport.authenticate('evernote'));
+app.get('/auth/evernote/callback', passport.authenticate('evernote', {
+  failureRedirect: '/login'
+}), function(req, res) {
+  res.redirect('/');
+});
+
+app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
 app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express server listening on port ' + app.get('port'));
 });
