@@ -1,5 +1,85 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+!!! 5
+//if lt IE 7
+    html(class="no-js ie6 oldie", lang="en")
+//if IE 7
+    html(class="no-js ie7 oldie", lang="en")
+//if IE 8
+    html(class="no-js ie8 oldie", lang="en")
+// [if gt IE 8] <!
+html(class="no-js", lang="en", xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="http://ogp.me/ns/fb#")
+    // <![endif]
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+        title= title
+        meta(name='description', content='')
+        meta(name='viewport', content='width=device-width')
+        link(href='css/bootstrap.min.css', rel='stylesheet', media='screen')
+        link(href='css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+        link(rel='stylesheet', href='css/main.css')
+    body
+    //if lt IE 7
+      p.chromeframe
+        | You are using an
+        strong outdated
+        | browser. Please
+        a(href='http://browsehappy.com/') upgrade your browser
+        | or
+        a(href='http://www.google.com/chromeframe/?redirect=true') activate Google Chrome Frame
+        | to improve your experience.
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href='/') MarkdownNote
+          .nav-collapse.collapse.pull-right
+            form#main-menu-right.navbar-form.pull-right
+                - if (!auth)
+                    button#login.btn(type='button') Login
+                - else
+                    button#logout.btn(type='button') Logout
+            - if (auth)
+                ul.nav.pull-right
+                  li#nbSelection.dropdown
+                    a#nbSelected.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                      | Current Notebook: Default
+                      b.caret
+                    ul.dropdown-menu(role='menu', aria-labelledby='nbSelected')
+                      li.divider(role='presentation')
+    .wrapper.container
+      h2 A Markdown Editor for Evernote
+      input#noteTitle(type='text', placeholder='Note Title...', size='255')
+      - if (auth)
+        button#save.pull-right.btn-primary.btn(type='button') Save to Evernote
+      #epiceditor
+      table.table.table-striped
+        tr
+          th(width='37%') Feature
+          th Editor Shortcut
+        tr
+          td Full Screen
+          td
+            code alt + f
+        tr
+          td Preview
+          td
+            code alt + p
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(type='text/javascript', src='epiceditor/js/epiceditor.min.js')
+    script(type='text/javascript', src='js/jstorage.js')
+    script(type='text/javascript', src='js/evernote-sdk-minified.js')
+    script(type='text/javascript', src='js/bootstrap.min.js')
+    script(type='text/javascript', src='js/plugins.js')
+    - if (auth)
+        script
+            var user = {
+                id  : "#{auth.id}",
+                shard : "#{auth.shard}",
+                storeUrl : "#{auth.storeUrl}",
+                token : "#{auth.token}"
+            }
+    script(type='text/javascript', src='js/main.js')
+    script
+      // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      // s.parentNode.insertBefore(g,s)}(document,'script'));

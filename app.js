@@ -4,7 +4,7 @@
 
 var express = require('express'),
     routes = require('./routes'),
-    user = require('./routes/user'),
+  
     http = require('http'),
     path = require('path');
 var passport = require('passport'),
@@ -32,8 +32,6 @@ app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.session({ secret: 'keyboard cat' }));
-// Initialize Passport!  Also use passport.session() middleware, to support
-// persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
@@ -49,37 +47,23 @@ passport.use(new EvernoteStrategy({
     userAuthorizationURL: 'https://sandbox.evernote.com/OAuth.action',
     consumerKey: EVERNOTE_CONSUMER_KEY,
     consumerSecret: EVERNOTE_CONSUMER_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/evernote/callback"
+    callbackURL: "/auth/evernote/callback"
   },
   function(token, tokenSecret, profile, done) {
-    console.dir(arguments);
+
     process.nextTick(function () {
-      
-      // To keep the example simple, the user's Evernote profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Evernote account with a user record in your database,
-      // and return that user instead.
+      profile.token = token;
       return done(null, profile);
     });
      
   }
 ));
 
-// GET /auth/evernote
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Evernote authentication will involve redirecting
-//   the user to evernote.com.  After authorization, Evernote will redirect the user
-//   back to this application at /auth/evernote/callback
-app.get('/auth/evernote',
-  passport.authenticate('evernote'),
-  function(req, res){
-   
-  });
-
-app.get('/auth/evernote/callback', 
+app.get('/auth/evernote', passport.authenticate('evernote'));
+app.get('/auth/evernote/callback',
   passport.authenticate('evernote', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+      res.redirect('/');
   });
 
 app.get('/logout', function(req, res){
@@ -87,8 +71,7 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 app.get('/', routes.index);
-app.get('/users', user.list);
-// everyauth.helpExpress(app);
+
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
 });
