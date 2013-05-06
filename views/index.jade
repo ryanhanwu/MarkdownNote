@@ -44,7 +44,14 @@ html(class="no-js", lang="en", xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="h
                       | Current Notebook: Default
                       b.caret
                     ul.dropdown-menu(role='menu', aria-labelledby='nbSelected')
+                      - each nb in notebooks
+                        li(role="presentation",data-guid="#{nb.guid}")
+                          a(role="menuitem",tabindex="-1") #{nb.name}
                       li.divider(role='presentation')
+                      - each nb in notebooks
+                        - if (nb.defaultNotebook === true)
+                          li(role="presentation",data-guid="#{nb.guid}", data-default="true")
+                            a(role="menuitem", tabindex="-1") Default
     .wrapper.container
       h2 A Markdown Editor for Evernote
       input#noteTitle(type='text', placeholder='Note Title...', size='255')
@@ -66,17 +73,8 @@ html(class="no-js", lang="en", xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="h
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
     script(type='text/javascript', src='epiceditor/js/epiceditor.min.js')
     script(type='text/javascript', src='js/jstorage.js')
-    script(type='text/javascript', src='js/evernote-sdk-minified.js')
     script(type='text/javascript', src='js/bootstrap.min.js')
     script(type='text/javascript', src='js/plugins.js')
-    - if (auth)
-        script
-            var user = {
-                id  : "#{auth.id}",
-                shard : "#{auth.shard}",
-                storeUrl : "#{auth.storeUrl}",
-                token : "#{auth.token}"
-            }
     script(type='text/javascript', src='js/main.js')
     script
       // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

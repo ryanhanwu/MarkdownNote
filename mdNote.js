@@ -70,6 +70,7 @@ app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
+app.post('/saveNote', routes.save);
 app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function() {

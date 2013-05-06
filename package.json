@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "express": "3.1.1",
+    "underscore" : "*",
     "jade": "*",
     "passport" : "*",
-    "passport-evernote" : "*"
+    "passport-evernote" : "*",
+    "evernote": "*"
   }
 }
