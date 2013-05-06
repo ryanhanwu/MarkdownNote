@@ -3,10 +3,12 @@
  */
 
 var express = require('express'),
+  expressValidator = require('express-validator'),
   routes = require('./routes'),
   config = require('./config.json'),
   http = require('http'),
   path = require('path'),
+
   passport = require('passport'),
   EvernoteStrategy = require('passport-evernote').Strategy;
 
@@ -31,6 +33,7 @@ app.use(express.logger('dev'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(expressValidator);
 app.use(express.session({
   secret: 'keyboard cat'
 }));
@@ -70,7 +73,7 @@ app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-app.post('/saveNote', routes.save);
+app.post('/saveNote', routes.validateSave, routes.save);
 app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function() {

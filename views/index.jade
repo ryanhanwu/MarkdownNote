@@ -55,6 +55,7 @@ html(class="no-js", lang="en", xmlns="http://www.w3.org/1999/xhtml", xmlns:fb="h
     .wrapper.container
       h2 A Markdown Editor for Evernote
       input#noteTitle(type='text', placeholder='Note Title...', size='255')
+      button#reset.pull-right.btn(type='button') Reset Cache &amp; Data
       - if (auth)
         button#save.pull-right.btn-primary.btn(type='button') Save to Evernote
       #epiceditor

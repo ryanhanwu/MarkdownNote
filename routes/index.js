@@ -1,9 +1,16 @@
-var _ = require("underscore"),
+var util = require('util'),
+    _ = require("underscore"),
     Evernote = require('evernote').Evernote;
 
-
+exports.auth = function (req, res, next) {
+    if (!req.user) {
+        res.redirect("/");
+        return;
+    }
+    next();
+};
 exports.index = function(req, res) {
-    console.dir(Evernote);
+    // console.dir(Evernote);
     var renderObj = {
         title: 'MarkdownNote',
         auth: false
@@ -38,8 +45,22 @@ exports.index = function(req, res) {
 
 
 };
-exports.listNotebooks = function(req, res, next) {
+exports.validateSave = function (req, res, next) {
+    req.assert('content', "Content is null").notEmpty();
+    req.assert('title', "Title is null").notEmpty();
+    req.assert('guid', "Didn't select any notebook").notEmpty();
+    
+    req.sanitize('content').trim();
+    req.sanitize('title').trim();
+    req.sanitize('guid').trim();
 
+    var errors = req.validationErrors();
+
+    if (errors) {
+        res.send('Validation errors: ' + util.inspect(errors), 500);
+        return;
+    }
+    next();
 };
 exports.save = function(req, res, next) {
     var token = req.user.token,
@@ -58,7 +79,7 @@ exports.save = function(req, res, next) {
         if(argument instanceof Evernote.Thrift.TException) {
             console.error(argument);
             
-            res.json({ error : 100});
+            res.send({error : 100}, 500);
         }
         res.json({ success : 100});
     });
