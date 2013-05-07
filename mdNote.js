@@ -46,10 +46,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 if('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+var OAuthUrl = 'https://' + (config.debug === true ? "sandbox" : "www") + '.evernote.com';
+
 passport.use(new EvernoteStrategy({
-  requestTokenURL: 'https://sandbox.evernote.com/oauth',
-  accessTokenURL: 'https://sandbox.evernote.com/oauth',
-  userAuthorizationURL: 'https://sandbox.evernote.com/OAuth.action',
+  requestTokenURL: OAuthUrl + '/oauth',
+  accessTokenURL: OAuthUrl + '/oauth',
+  userAuthorizationURL: OAuthUrl + '/OAuth.action',
   consumerKey: EVERNOTE_CONSUMER_KEY,
   consumerSecret: EVERNOTE_CONSUMER_SECRET,
   callbackURL: "/auth/evernote/callback"
