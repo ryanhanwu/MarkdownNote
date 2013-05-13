@@ -6,7 +6,6 @@ A note editor using [MarkDown](http://daringfireball.net/projects/markdown/synta
 * It can only create new notes now
 
 ## Usage
-=====
 1. Login
 	* It will ask for your authentication, don't worry, it won't save anything.
     
@@ -21,8 +20,6 @@ A note editor using [MarkDown](http://daringfireball.net/projects/markdown/synta
 
 
 ## About
-=====
-
 Please let me know if you have any questions.
 
 Cheers,
@@ -32,13 +29,11 @@ Cheers,
 
 
 ## TODO
-=====
 * Save Markdown text for user
 * Update selected note
 
 
 ## License
-=====
 	Copyright 2013 Ryan Wu
 
     Licensed under the Apache License, Version 2.0 (the "License");
