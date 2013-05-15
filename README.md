@@ -1,6 +1,8 @@
 [MarkdownNote](http://mdnote.ryanwu.me)
 ========================================
 
+[![Build Status](https://travis-ci.org/flyworld/MarkdownNote.png?branch=master)](https://travis-ci.org/flyworld/MarkdownNote)
+
 A note editor using [MarkDown](http://daringfireball.net/projects/markdown/syntax) for [Evernote](https://evernote.com/)
 
 * It can only create new notes now
