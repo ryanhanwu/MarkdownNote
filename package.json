@@ -7,11 +7,13 @@
   },
   "dependencies": {
     "express": "3.1.1",
-    "express-validator" : "*",
-    "underscore" : "*",
+    "express-validator": "*",
+    "underscore": "*",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint" : "*",
     "jade": "*",
-    "passport" : "*",
-    "passport-evernote" : "*",
+    "passport": "*",
+    "passport-evernote": "*",
     "evernote": "*"
   }
 }
