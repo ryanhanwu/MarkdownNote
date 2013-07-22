@@ -22,7 +22,7 @@ exports.index = function(req, res) {
             protocol = new Evernote.Thrift.BinaryProtocol(transport),
             note_store = new Evernote.NoteStoreClient(protocol);
         note_store.listNotebooks(token, function(notebooks) {
-            // console.dir(notebooks);
+            console.dir(notebooks);
             var userNotebooks = [];
             for(var i = notebooks.length; i--;) {
                 var nb = notebooks[i];
@@ -75,7 +75,6 @@ exports.save = function(req, res, next) {
     note.guid = req.body.guid;
     note.content = skeleton;
     note_store.createNote(token, note, function(argument) {
-        console.dir(arguments);
         if(argument instanceof Evernote.Thrift.TException) {
             console.error(argument);
             

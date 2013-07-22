@@ -35,8 +35,7 @@ $(function() {
             Component.btn_save.click(Actions.save);
             editor = new EpicEditor(opts).load();
             var localStorageData = $.jStorage.get(Consts.auth);
-            if (localStorageData)
-                Actions.fallback(localStorageData);
+            if(localStorageData) Actions.fallback(localStorageData);
             App.cache.guid = $("li[data-default='true']").data('guid');
             window.autoSave = setInterval(Actions.autosave, 50);
             $('.dropdown-toggle').dropdown();
@@ -44,10 +43,7 @@ $(function() {
     },
         Component = {
             alert: function(level, message) {
-                $('<div class="alert fade in"><button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>')
-                .addClass("alert-" + level)
-                .appendTo(".wrapper")
-                .delay(5000).slideUp(300);
+                $('<div class="alert fade in"><button type="button" class="close" data-dismiss="alert">x</button>' + message + '</div>').addClass("alert-" + level).prependTo(".wrapper").delay(5000).slideUp(300);
             },
             menu_nbSel: $("#nbSelection .dropdown-menu"),
             field_title: $("#noteTitle"),
@@ -64,7 +60,7 @@ $(function() {
                 App.cache.guid = item.parent().data('guid');
                 Component.label_nbSel.html("Current Notebook: " + item.html());
             },
-            resetData: function () {
+            resetData: function() {
                 clearInterval(window.autoSave);
                 $.jStorage.deleteKey(Consts.auth);
                 editor.unload();
@@ -81,7 +77,7 @@ $(function() {
                 location.href = '/logout';
                 App.initialize();
             },
-            fallback: function (savedData) {
+            fallback: function(savedData) {
                 Component.field_title.val(savedData.title);
             },
             autosave: function() {
